@@ -212,10 +212,155 @@ delete.
 2.Git Merging Strategy & Merge Conflicts
 1. Create a New Branch from master
 . You're on the master branch and have some existing files:
+. If you create a new branch called development:
+git branch development
+. Switch to the newly created branch:
+Note: All files from master are copied into the development branch, maintaining the same snapshot
+at the time of creation.
 
+. Git creates a copy of all files from master and puts them into development
+. You now have the same project in a separate line, so you can work without touching the
+main code.
 
+3. Make Changes and Commit in the Development Branch
+Edit Demo. java:
+// Before
+Adding new feature = 2
+// Change it to
+Adding new feature = 3
+. Check the diff to confirm your edit:
+git diff
+. You'll see the exact change made.
+. Now stage and commit the change:
+git add Demo.java
+git commit -m "Updated feature 2 to 3 in Demo. java"
+. This change is now only in the development branch.
+Switch to Master and Merge
+. Return to the master branch and review the Demo.java file before merging.
+git switch master
+. Now merge the changes from development:
+git merge development
+. Git applies the changes from development to master.
+. Now check Demo. java Successfully merged!
 
+4. What Happens If You Don't Commit Before Switching
+Branches?
+. You're on the development branch and you edited a file (Demo. java) like this:
+// old line
+Adding new feature = 3
+// You changed it to:
+Adding new feature = 4
+. But you didn't save or commit the file, so the status shows it is still not committed.
+Now You Run:
+git switch master
+You'll see: Adding new feature = 4
+M Demo. java
+. M stands for Modified.
+. This tells you that Demo. java has uncommitted changes.
+. And Git carried those changes into the master branch when you switched.
+. Even though you never committed it in development, it came with you to master.
+. This is exactly what we call "auto-carrying" Git moved the changes with you silently
+because:
+. There were no conflicts in master
+. This is called auto-carrying it can accidentally leak code into other branches, which
+is dangerous in real-time teams
+Tip: Avoid Auto-Merge Accidents
+. Never switch branches with unsaved/uncommitted edits.
+· Always:
+. git commit the changes, or
+. git stash to save them temporarily
 
+5. What is a Merge Conflict?
+Let's say we have:
+. A master branch (main code)
+. A development branch (you are working here)
+. A feature branch (your teammate is working here)
+You and your teammate both edit the same file (Demo. java) and even the same line, but with
+different content.
+1. In development, you add:
+Adding new feature = 5
+. Switch to development and modify the file:
+. Edit Demo. java and change this line:
+Now stage and commit:
+git add
+git commit -m "Updated 5 in Demo. java"
+2. In feature, your teammate added:
+Adding new feature = 10
+. Switch to the feature branch
+. Edit Demo. java and change the same line to.
+. Now stage and commit:
+git commit -am "Updated to 10 "
+3. Merge feature into development
+Now switch back to development and try to merge feature into it:
+git switch development
+git merge feature
+. Git will stop and say: Merge conflict in Demo.java
+. Now if you try to merge feature into dev, Git doesn't know which line to keep.
+
+4. Resolve the Conflict
+. Open Demo. java, and you'll see something like:
+These lines are called conflict markers:
+. <<<<<<< HEAD-> this is the change from your current branch (development)
+- this separates the two conflicting changes
+. >>>>>>> feature -> this is the change from the branch you're merging (feature)
+. You need to edit this file manually, choose what to keep then save it.
+. This is called a merge conflict.
+. After editing and saving Demo. java, you need to stage and commit the changes.
+git commit -am "Resolved merge conflict in Demo.java"
+Note: No Need to Merge Again
+. After resolving the conflict and committing the merge, you can check the same line in both
+branches and you'll find the same content in both.
+
+6. How to Push a New Branch to GitHub - Full Steps
+Step 1: Check Local Branches
+git branch
+This shows all your local branches.
+Make sure you're on the correct one before pushing.
+Step 2: Check Remote Branches (Optional)
+git branch -r
+This lists all remote branches (those already on GitHub).
+Step 3: Push the Local Branch to GitHub
+. Use branch names (branch1 branch2) if you only need to update specific branches.
+. Use -- all if you want to sync all local branches with the remote repository.
+Git push branch1 branch2
+Git push -all
+. This tells Git: "Take all local branches and push them to the jio remote on GitHub."
+Step 4: Confirm Remote Branches Again
+You ran again:
+git branch -r
+Now it shows: All three branches now exist on GitHub!
+Step 5: View All Branches (Local + Remote)
+git branch -a
+This shows both local and remote branches in one place.
+Output:
+Perfect! Local branches and remote branches are now fully in sync.
+Creating Branch on GitHub and Bringing It to Local
+Step 1: Create a Branch from GitHub UI
+. Go to your repository on GitHub
+. Near the branch dropdown (top-left), select master (or whichever branch you're on)
+. Now type a new branch name, like stg, and hit Enter
+. GitHub will create stg from where you are (e.g., from master)
+Step 2: Bring That Branch to Local
+Now, go to your terminal and run:
+git branch -r
+. You won't see stg yet because your local Git doesn't know about the new branch.
+. Run git pull or git fetch
+. This updates the list of remote branches.
+. Now, run: git branch -r again. You will see that stg is now in your local list.
+Step 3 :Checkout the Remote Branch Locally
+. Sometimes, you may see a branch available in the remote, but not in your local system. Let's
+fix that.
+. Check All Branches
+git branch -a
+. The stg branch exists remotely, but not locally.
+. So, it won't show in git branch (local branch list).
+. Sync Remote Branch to Local
+git checkout -b stg jio/stg
+git checkout -b stg < alias- name >/stg
+This means:
+. -b stg: Create a new local branch named stg
+. jio/stg: Set it to track the remote branch jio/stg
+After syncing, you can see both the local and remote branches listed when you run git branch -a
 
 
 
