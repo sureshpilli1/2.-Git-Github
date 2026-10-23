@@ -59,8 +59,174 @@ step 2: git restore <fileName>
 
 
 
+
 BLOG NOTES:
------------1. What is a Git Tag?
+-----------
+Git Branching: Work Without Disturbing the Main Code
+Branching in Git lets you create a separate path from the main project, allowing independent v
+without affecting the original code.
+
+How It Works
+
+. A branch is like a snapshot of the main project at that moment.
+. You can freely modify, test, and update the branch without impacting the main code.
+. Once everything is tested and ready, you merge the branch back to the main.
+
+Why Use Branching?
+. Develop new features without breaking the main code.
+. Fix bugs safely before applying changes to the main branch.
+. Enable collaboration so multiple developers can work simultaneously.
+. Test thoroughly before making changes live.
+. Keep the main branch clean for production use.
+. Provides a clear history of contributions. You can easily see who worked on what and
+when, which makes tracking and managing the project very easy.
+
+Git Branching Flow: From Main to Production
+This flow helps manage code safely from development to deployment.
+
+1. main/master is the main production code
+. This branch holds the live and stable code that is already deployed to users.
+. We never directly work on this - only tested and approved code goes here.
+
+2. Create development branch from main
+. This becomes the working branch where all ongoing updates and new features are merged.
+
+3. Developers create feature branches from development
+. Every new feature is built in a separate branch (like feature-login, feature-payment).
+This keeps each developer's work isolated.
+
+4. After completion and testing, feature branches are merged into development
+. Only after unit testing or code review, features are added back to development.
+
+5. QA team tests the development code in a QA or STG environment
+. All integrated features are tested together to check for bugs or issues.
+
+6. Once QA is approved, changes are moved to UAT (User Acceptance Testing)
+. Final testing happens here with the business team or client.
+
+7. After UAT success, merge development into main and deploy to production
+. Now, the tested code reaches the live environment for users.
+
+Why This Flow is Good
+. Keeps production code safe
+. Allows parallel feature development
+. Enables multiple testing layers (Dev - QA -+ UAT)
+. Reduces risk of bugs reaching production
+
+Handling Hotfixes in Git Branching
+Hotfix branches are crucial when an urgent issue needs fixing in production without disrupting
+ongoing development.
+
+Hotfix Workflow
+
+1. Create a hotfix branch from main/master
+. Example: hotfix/security-update, hotfix/payment-bug.
+. This ensures the emergency fix is applied directly to live code.
+
+2. Apply and test the fix in the hotfix branch
+. Validate the fix before deploying quick but thorough testing is key.
+
+3. Merge the hotfix into main/master and deploy
+. Once confirmed, merge the hotfix branch directly into main/master for immediate release.
+
+4. Backport the fix to development
+Merge the hotfix branch into development to ensure the fix isn't lost in future releases.
+
+Why Merge Hotfix to Development After Merging to Main?
+Yes, you first merge the hotfix to main to fix the issue in production. But then, you also need
+to merge it into development - here's why:
+You have two branches:
+. main -> Live code in production
+. development -> Ongoing feature work
+Now suppose you fixed a bug in a hotfix branch and merged it into main.
+But ,If you don't merge it into development, the fix will be missing when the next feature release
+goes from development -> main.
+1. Git Branch Commands
+In Git, the git branch command helps us do many things like:
+. List all branches
+. Create branch
+. Delete a branch
+. Rename a branch
+. Switch from one branch to another
+1. List Branches
+git branch
+This shows all local branches.
+. The one with * is your current branch (means you're standing on that branch now).
+
+2. Create a New Branch
+git branch dev
+git branch < name >
+This creates a new branch called dev based on the branch you're currently in.
+. But you will still stay in your old branch.
+
+3. Switch to Another Branch
+We switch to another branch when we want to start working in that branch.
+Old Way (Still Works)
+git checkout dev
+git checkout master
+. This moves you into the dev and master branches.
+
+New Way (Git version 2.23+)
+git switch is a modern alternative to git checkout
+Git introduced a simpler and safer command in version 2.23 and above called git switch.
+git switch dev
+git switch master
+. Same as above, just a newer and clearer command.
+. It's better to use git switch because it is specially made for branch switching only.
+
+4. Create and Switch to a New Branch
+If you want to create a new branch and move into it in one shot:
+Old Way:
+git checkout -b feature-1
+
+The command git checkout -b feature-1 is used to create and switch to a new branch
+called feature-1.
+New Way (Recommended):
+git switch is a modern alternative to git checkout that does the same thing creates and
+switches to a new branch.
+git switch -c feature-2
+
+Here, -c means "create and switch"
+
+. git switch is used only for branch operations
+. git checkout is used for both branches and file operations
+. So git switch is safer and easier when working with branches
+
+5. Rename a Branch
+You can rename a Git branch at any time, whether it's a local branch or a remote one.
+git branch -m < old-name > < new-name >
+. If you're not on the branch you want to rename:
+This renames dev to development.
+. If you're already inside the branch, just use:
+git branch -m new-name
+
+6. Delete a Branch
+You want to delete a branch after work is done:
+git branch -d feature-2
+. You can also delete multiple branches at once like this:
+If Git says it's not merged and still you want to delete:
+git branch -D feature
+Note: You cannot delete the branch you're currently on. First switch to another branch, then
+delete.
+
+2.Git Merging Strategy & Merge Conflicts
+1. Create a New Branch from master
+. You're on the master branch and have some existing files:
+
+
+
+
+
+
+
+
+
+
+
+
+BLOG NOTES:
+-----------
+1. What is a Git Tag?
 A Git tag is like a version sticker for your code it marks a specific point in your project's
 history, usually after a stable release.
 Tag = Version
