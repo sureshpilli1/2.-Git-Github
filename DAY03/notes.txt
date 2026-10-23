@@ -103,3 +103,183 @@ Use for: Classroom teaching, DevOps interviews, and student projects.
 
 ---
 
+
+
+BLOG NOTES:
+-----------
+When working with Git, adding files to the staging area is an important step before committing
+changes. Two commonly used commands for this are git add . and git add *, but they handle
+hidden files and directories differently.
+This guide covers essential Git operations like commit, reset, revert, push, and using .gitignore,
+with practical examples and clear explanations.
+1. Understanding git add . VS git add
+git add . Adds all files - new, modified, including hidden files and files inside subfolders.
+git add * Adds only visible (non-hidden) files from the current folder. Skips hidden files and
+subfolder files.
+Step 1: Create Some Files
+First, let's create normal and hidden files using this command:
+touch one. java two. java .hidden1 .hidden2
+. Now check the status git status
+. You will see something like this:
+. one. java, two. java - These are normal files
+. .hidden1,.hidden2- These are hidden files (because they start with a dot .)
+
+2. Adding Files to the Staging Area
+Step 1: Using git add
+Let's say you run this command : Using git add *
+git add *
+. It will add one. java and two. java to the staging area. These are normal files, so Git will include
+them.
+. It will not add: . files ,. text
+These are hidden files (they start with a dot .), and * doesn't match them so Git will skip them.
+. In short:
+git add * will ignore hidden files. It only adds visible (normal) files.
+
+Step 2: Using git add . (Add All Files - Normal + Hidden)
+First, Create Some Files
+touch one. txt two. txt
+Now check the status. You can see the newly created files in the working area.
+. one. txt, two. txt - These are normal files
+. .hidden1, .hidden2 - These are hidden files
+Using git add .
+git add .
+. This command will add:one. txt two. text .hidden1 .hidden2
+. That means: It moves all files (normal + hidden) into the Staging Area.
+
+3. Moving files from staging area to working area (Using git
+reset)
+Check Status to Confirm
+You Already Added Files to Staging Now Want to Unstage
+git status
+. All these files are now in staging which means they are ready for commit.
+. Now, if you want to unstage files due to some requirement, you can do this in several ways.
+Let's see how.
+1. Unstage Only One File
+Let's say you want to unstage only one. java, but keep the file safe in the working folder.
+git reset one.java
+. This command removes one. java from staging.But the file will still be there not deleted.
+. Now check the status, and you can find the file in the unstaged area, moved back to the
+working directory.
+2. Unstage All normal files At Once
+If you want to remove all files from staging run:
+git reset *
+. Check the status. It will only move:
+. one. java, one. txt, two. java, two. txt
+. These files move from staging to working area.
+. But hidden files like .hidden1, .hidden2 will still remain in staging - not touched.
+. Because * doesn't include hidden files (files starting with .)
+3. To unstage all files including hidden ones, run:
+git reset .
+. It moves all files (normal and hidden) from staging back to the working area.
+. It will not delete any file
+. Just cancels the staging, so you can edit or re-add again
+
+4. Removing Files from the Working Directory
+. Cleaning Up Untracked Files
+. Sometimes, you may need to clean up untracked files from the working directory. To see
+what files would be deleted:
+. Check the status, and you will find untracked files.
+1. Do a Dry Run (Check what will be deleted)
+Before deleting, check safely using:
+git clean -n
+git clean -n < filename
+. This will not delete, just show you what Git will remove.
+. You'll see output like: Would remove that file.
+2. Now Clean the Files
+git clean -f
+. Now you can see that those unwanted, untracked files have been deleted.
+. Check Status Again Now you will see:
+. All untracked files are cleaned
+. Git working directory is fresh and clean
+
+Tip: Be careful when using git clean -f. It will permanently delete untracked files.
+It will not touch committed or staged files only untracked files.
+
+5. Handling Mistaken Commits (Using git revert )
+. You Made a Mistake and Committed It?
+. Let's say by mistake, you:
+. Edited an existing file: Demo. java
+. Created a new file: temp. txt
+Then you added and committed them:
+git add *
+git commit -m "Updated Demo.java and added temp.txt"
+. Now you realize this commit was a mistake.
+. You can follow these steps:
+Step 1: Check the Commit Log
+git log
+You'll see your latest commits, like:
+. Copy the commit ID
+Step 2: Revert That Commit
+Now undo that commit safely using:
+git revert < commit id >
+. This doesn't delete history.It creates a new commit that reverses the changes.
+What Happens After Revert?
+. Demo. java will go back to how it was before you modified it.
+. temp. txt (which was newly added) will be removed.
+. Your code is now back to the correct state.
+
+6. Pushing Code and Handling Errors
+Step 1: Edit & Create Files
+Let's say you did the following:
+. Edited an existing file: def. sh
+. Created a new file: test. java
+Check the files in your folder: 1s -1rth
+You'll see both old and newly created files.
+Step 2: Add and Commit
+git add
+git commit -m "Updated def.sh and added test. java"
+What happened here:
+. The edited file def. sh moved to staging
+. The new file test. java also moved to staging
+. After commit, both changes are saved in Git history
+. Now if you run git status it will be clean (nothing to commit)
+Step 3: Push to GitHub
+git push < alias name > master
+Git tries to upload your changes to GitHub.
+Step 4: Push Fails? Someone Else Pushed Already
+You may see an error like:
+rejected because the remote contains work that you do not have locally
+If someone pushed before you, you'll get an error.
+Fix it with:
+git pull < alias name > master
+git push < alias name > master
+git pull will bring their changes to your local folder
+git push will now work, because your local is updated
+. Now you can open and check GitHub. You will see the updated def.sh and test.java files.
+Step 5: Your Push Broke the Code? Revert It
+. Your team says: "Code is not working! Please revert your push!"
+git log
+Copy the commit ID of the commit that broke the code.
+Now revert it:
+git revert < bad_commit id >
+git push origin main
+. This will undo only that commit, but history will be safe no deletion.
+It creates a new commit to reverse the changes.
+. def.sh content is reverted - it becomes empty again (if it was empty before).
+. test. java is deleted - because it was newly created in that bad commit.
+Push the Revert
+To apply this on GitHub too:
+Step 6: Go to GitHub and Check:
+. def.sh is there, but empty (back to original)
+. test. java is no longer in the repo
+Tip : Don't edit code directly in GitHub. Always pull the latest code, make changes loo
+push to GitHub. This keeps your workflow clean, testable, and professional.
+
+7. Prevent a File from Being Pushed to GitHub -
+Using .gitignore
+Let's say you created a file called secret. txt:
+touch secret.txt
+Now you don't want this file to go to GitHub.
+Step 1: Create .gitignore
+touch .gitignore
+Now you can see both files in the working area.
+Step 2: Add the file name inside .gitignore
+Instead of manually opening .gitignore, just run:
+echo "secret.txt" >> .gitignore
+It prevents secret. txt from being added to staging or pushed to GitHub.
+Step 3: Try to add all files
+git add .
+If secret. txt is NOT listed - it means Git is successfully ignoring it.
+You will see: secret. txt is not moved to staging.
+So now, even if you commit and push, that secret. txt file will not go to GitHub.
+This is the best way to keep sensitive or private files safe.
