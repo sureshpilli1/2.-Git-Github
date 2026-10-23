@@ -1,3 +1,4 @@
+
 What is the diff b/w branch and tag?
 Branch
 —-------
@@ -31,49 +32,250 @@ NOTE: tag files always showing in zip and tar
 
 
 IQ: How to create a tag in remote repository?
-
 Goto tag→create release —> create a tag —-> ……..
-
 
 Git stash
 —---------
-
 When we are working on one task on dev branch, Immediately we got an issue in prod(master), we need to switch.
-
 Step 1: take the working area backup of dev.
-     
             git stash save “login feature”
 Step 2: see the list of backup.
- 
             Git stash list  → stash@{0}, stash@{1} —--
-
 Step 3: go to master branch and finish the work and come back.
-
 Step 3: use the backup to get the data.
       Git stash apply stash@{1}
 
-
-
-
-
-
 IQ: In my local repo , size is increasing , How to proceed to reduce that?
-
 Ans: Need to delete all stash files which are not using.
-  
 Git stash drop —-> by default recent will be deleted.
 Git stash drop stash@{5} —> specific one deletion.
-
 NOTE: git stash pop [apply and delete]
-
 git stash clear  —> delete all the stashes at once
 
 
-
-
-
 How to restore the working area changes?
-
 step 1: wrongly updated file in working area.
-
 step 2: git restore <fileName>
+
+
+
+BLOG NOTES:
+-----------1. What is a Git Tag?
+A Git tag is like a version sticker for your code it marks a specific point in your project's
+history, usually after a stable release.
+Tag = Version
+"A tag is nothing but a version label (like v1.0.0) that you give to the current clean and tested
+code on your main branch."
+
+What Git Tags Help You Do:
+. Mark stable versions of your project (like v1.0.0, v2.1.0)
+. Refer back to a specific version anytime in the future
+. Use in deployments CI/CD pipelines can deploy based on tags
+. Make your code downloadable from platforms like GitHub (as .zip or .tar)
+. Rollback easily if something goes wrong in future versions, you can jump back to the tagged
+version instantly
+
+2. Git Workflow with Tags
+Here's how versioning typically works in a structured Git workflow especially in real-time team
+environments like IT projects :
+1. Feature Development
+. A developer creates a feature branch from the development branch.
+. They work on new features or bug fixes.
+. They perform unit testing, code review, etc.
+. If everything is working fine, it goes to the next stage.
+2. Testing Stages - STG & UAT
+. After unit testing, the feature goes through:
+. STG (Staging) - Internal testing
+. UAT (User Acceptance Testing) - Client validation
+. Bugs, if any, are fixed and re-tested.
+3. Merge to Development
+. Once the feature passes STG and UAT, it is merged into the development branch.
+4. Merge to Main
+. The development branch is tested again.
+. If the code is stable, it is merged into the main branch.
+. If any issue occurs, they roll back instead of merging.
+5. Version Tagging
+. Once the code in the main branch is clean and stable, a Git tag is created.
+. The tag represents the version of the current code, e.g., v1.0.0.
+. This tag becomes a reference point for production deployment.
+
+3. Example: Tagging a Shopping App Release
+Let's say you're working on a Shopping App with key features like login, cart, and payment.
+Development Process
+1. You build each feature on separate branches 2.You perform: Unit Testing ,STG (Staging) Testing
+,UAT (User Acceptance Testing) . 3. After all testing passes, the code is merged into
+the main branch
+Now the main branch is stable
+It contains clean, tested, production-ready code.
+Create a Tag to Mark This Version
+To lock this state in Git history, use:
+
+git tag ShoppingApp_v1.0.0
+git push origin ShoppingApp_v1.0.0
+
+
+What does this mean?
+"This is version 1.0.0 of our Shopping App - stable and tested. We're tagging this point to
+lock it as a reference for future use."
+Now this version:
+. Is downloadable as ZIP/TAR from GitHub
+. Can be restored any time using the tag
+. Can be used to trace what went into that release
+
+4. Types of Git Tags - Semantic Versioning
+In Git, tags often follow a concept called Semantic Versioning, which helps you identify the
+purpose and impact of a release at a glance. The format used is:
+< major > .< minor > .< patch >
+
+For example: v2.4.1 Explanation:
+. Major version changes indicate big updates that may break backward compatibility.
+For example, changing from 1.0.0 to 2.0.0 means some old features might not work anymore.
+. Minor version changes mean new features have been added, but the update is
+still backward-compatible.
+For example, moving from 1.1.0 to 1.2.0.
+. Patch version changes are for bug fixes or small improvements that don't affect the feature
+set.
+For example, 1.1.1 to 1.1.2.
+
+5. Git Tags and Git Stash - Practical Guide
+Now let's learn practical commands for creating, listing, deleting, and pushing Git tags, as well as
+using a GUI and Git Stash.
+
+
+Git Tags - Practical Demo
+1. List All Tags
+git tag
+This will display all the tags available in your repository. If you haven't created any tags yet, it will
+show an empty list.
+
+2. Create a New Tag
+git tag v1.0.0
+This creates a lightweight tag on the current commit. To check it, use the git tag command.
+Tip: You can also use an annotated tag with a message:
+. This creates an annotated tag named v1.0.1
+. The message "Initial stable release" is stored with it.
+git tag -a v1.0.1 -m "Initial stable release"
+. -a stands for annotated
+. -m is the message attached to the tag (like a commit message)
+. The tag message (Initial stable release) can be seen when you use the git show command.
+If you don't use -m, Git will open your default editor to write the message manually.
+
+What is git show?
+git show is a Git command used to display detailed information about a Git object usually
+a commit or a tag.
+git show v1.0.1
+. -a stands for annotated
+. -m is the message attached to the tag (like a commit message)
+. The tag message (Initial stable release) can be seen when you use the git show command.
+This will show you:
+· Tag name
+. Tag message
+. Who created the tag
+. Date
+. The commit it's pointing to
+. And the commit message
+
+3. Delete a Tag Locally
+Here, we are creating some tags to delete as an example.
+git tag -d v2.0.0
+This removes the tag v2.0.0 from your local system only.
+
+4. Push a Tag to Remote (Single Tag)
+git push < alias-name > v1.0.0
+Here we have three tags: v1.0.0, v1.0.1, and v1.1.1. Now, we will push one tag.
+. This command pushes the Git tag v1.0.0 to a specific remote repository. You can go and
+check GitHub under tags.
+
+5. Push All Tags to Remote
+This makes all locally created tags available on GitHub (or any Git remote), so they can be
+referenced, downloaded, or used in deployments.
+. Now you can see all the tags in the tags section on GitHub.
+
+6. Delete a Tag from Remote
+git push < alias-name > -- delete v1.0.0
+git push < alias name > -- tags
+This deletes the tag v1.0.0 from the remote repositorygit push -> Pushes changes to the
+remote repository.
+. jio - The remote alias, typically referring to GitHub or another Git remote.
+. -- delete - Removes the specified tag from the remote repository.
+. v1.0.0 - The tag name you are deleting.
+
+. If the command runs successfully, the tag v1.0.0 should be removed from the remote
+repository. You can check this on GitHub.
+
+6. Git Tag - GUI Method (Using GitHub or Git Clients)
+On GitHub:
+
+. Go to your repository
+. Click on Releases > create a new release.
+. Add a tag name like v2.0.0.
+. Attach it to a specific commit (usually from the dropdown).
+. Add a description (optional) and click Publish release.
+. GitHub will create both a release and a tag.
+
+7. Difference Between Git Branch and Git Tag
+
+
+
+
+
+
+8. What is Git Stash?
+You are working on a feature in the development branch. Suddenly, an urgent issue comes in master.
+You can't commit half-done work. What do you do?
+. Here you are working on the file Demo. java. You exited the file, and now it shows as modified.
+Use git stash - it hides your changes temporarily.
+git stash list helps you see the files in the stash list.
+
+1. Save Your Work with Git Stash
+This saves all uncommitted changes (tracked files only) and provides you with a clean working
+directory.
+git stash save "payment integration – 2025-06-15 13:20"
+This command saves your current changes into Git's stash, allowing you to temporarily store
+unfinished work without committing it.
+Using a timestamp in your stash message is a great practice.
+. git stash - Temporarily stores your uncommitted changes.
+. save "payment integration - 2025-06-15 13:20" -> Provides a label for the stash so you can
+easily reference it later.
+. After using the stash, running git status will show a clean working tree. This means it won't
+automatically merge.
+2. Switch to Master and Fix the Issue
+git switch master
+Make the required fix and commit.
+3. Go Back to Dev and Apply the Stashed Work
+git stash list
+git stash apply stash@{o}
+. After applying the stash, your working tree changes from clean to modified.
+. Now you can edit the files, stage them, and commit your updates as needed.
+4. Drop the Stash (Delete it)
+git stash drop stash@{o}
+. Deletes the specific stash entry stash@{o} from your stash list.
+. You no longer need that stash and want to clean up space.
+Note: It only deletes the selected stash, not all.
+Or if you want to clear all:
+git stash clear
+This removes all stashed changes from your repository, clearing out the entire stash list.
+. git stash -> Manages saved changes.
+. clear - Deletes all stashed entries (unrecoverable).
+git stash pop
+git stash pop applies the stash and then deletes it from the stash list.
+
+This command:
+. Applies the latest stash (stash@{0} - shell updating)
+. Removes it from the stash list after applying
+. The output shows the def. sh file was restored (modified)
+. Which confirms that stash was popped (applied and deleted).
+Check stash list again:
+. Now, only one stash remains:
+· stash@{o}-"payment new updating"
+(Note: the index gets renumbered. What was stash@{1} before is now stash@{ø}.)
+. Unlike git stash apply, which restores the stash but keeps it in the list, git stash pop applies
+the stash and removes it immediately.
+
+9. Undo File Changes in Git Using git restore
+1. You modified Demo. java and changed a value from 20 to 210.
+2. Using git restore Demo. java, you discarded the uncommitted changes.
+3. The file content was restored to its last committed state (20).
+. git restore <file> is useful to cancel local edits and get the file back to how it was after the
+last commit.
+. This does not affect committed history only uncommitted working directory changes.
