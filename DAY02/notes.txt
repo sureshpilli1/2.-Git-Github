@@ -127,3 +127,297 @@ Example:
 git show --pretty="" --name-only 93bc19a84166ce6ff1ad4e230f990ca05caf0150
 ```
 
+
+
+
+
+BLOG NOTES:
+-----------
+
+Imagine you're doing a project - sometimes alone, sometimes with a team. Code will keep
+changing. One person updates something, another person may break it, and someone else fixes it
+later. If we don't know who changed what, when, and why, the whole project will become
+confusing and messy.
+
+That's why we use Git.
+
+Git is a version control tool that helps you:
+
+. Keep a record of every change in your code
+. Go back to old versions if something goes wrong
+. Work with others without creating confusion
+. Clearly see who did what in the project
+
+Whether you are working alone or in a group, Git keeps your project safe, clean, and easy to
+manage.
+GitHub is a cloud platform.
+Git saves your project on your own computer.
+GitHub saves your project online, so others can work with you from anywhere in the world.
+
+Why Do Developers Use Git & GitHub?
+. Team members can work together without disturbing each other's code
+. You can find and fix bugs by checking the change history
+. Your code will be safe even if your system crashes (online backup)
+. You can easily connect GitHub to tools for automatic testing and deployment (CI/CD)
+
+Practical Scenario: Git From Scratch
+1. Create a Folder and Open Git Bash
+. Go to your Desktop
+. Right-click - Choose New - Folder
+. Give the folder a name like git.one
+. Open that folder
+. Inside the folder, right-click and choose "More options." You will see an option called "Git
+Bash Here."
+. Click on "Git Bash Here"
+. Now, Git Bash terminal will open. You are now inside the git. one folder using Git Bash.
+2. Initialize Git in the Folder (Very Important Step)
+. Now that Git Bash is open in your folder, you need to tell Git: "Start tracking this folder."
+. You do this by running the command:
+git init
+After running this, Git will create a hidden folder called .git inside your project.
+That .git folder is the brain of Git. It will track all changes you make in this folder.
+. You will also see a message like:Initialized empty Git repository in
+. This means Git is now ready to track your work in this folder.
+
+3. Understand Git Lifecycle
+Here's the flow of a file in Git:
+1. Working Directory - You create/edit files here
+2. Staging Area - You prepare selected files to be saved
+3. Local Repository - You commit and save your work
+4. Remote Repository - You push it to GitHub
+
+4. Creating Files and Checking Git Status
+Creating multiple files at once using a single command like this:
+touch Demo. java Order. java abc.py def. sh kkdevops. txt Prasanth. java
+After running the command, you can check the files using: 1s -1rth. You will see the created files.
+1. Demo. java
+2. Order. java
+3. abc.py
+4. def.sh
+5. kkdevops. txt
+6. Prasanth. java
+
+5. Check Git Status
+Now run this command in Git Bash:
+git status
+What does this mean
+. These all files are newly created.
+. They are in the Working Area.
+. Git shows them in red color, which means they are untracked.
+. Git knows the files are there, but it is not watching them yet.
+. These files are currently in the Working Area, waiting to be added to the Staging Area.
+
+6. Move Files to Staging Area
+Now we are moving files from Working Area to Staging Area.
+I. To add one file:
+git add Demo. java
+. You will see Demo. java is now in green color
+. That means the file is now in the Staging Area
+. Git is now watching this file and is ready to save it in commit
+. Other files will still be in red color -> means they are still in Working Area
+2. Add All . java Files:
+git add *. java
+. This adds only . java files (like Demo. java, Order. java, Prasanth. java)
+. These will show in green
+3. Add All Files
+git add *
+. This will move all untracked files to Staging Area
+. Now, all files will show in green when you when you check: git status
+Green color means the files are staged and ready for commit.
+
+7. Before Committing - Set Git Username & Email:
+git config -- global user.name "Your Name"
+git config -- global user.email "your@email.com"
+Replace "Your Name" and "your@email.com" with your actual name and GitHub email.
+To check what name and email Git is using:
+1. To check only your global (default) Git identity:
+git config -- global -- list
+. Shows only the global settings (like your name and email used in all repos).
+2. For current project settings (local + global + system):
+git config -- list
+. Shows settings from local, global, and system levels. You can see details like user
+name, email, and other Git configs.
+
+8. Commit Files to Local Repository
+Now we are saving the staged files permanently in the local Git repository.
+Use this command:
+git commit -m "Added all files"
+. The -m option is used to write a commit message. Always provide a short and clear message
+that explains what you did, such as which files you added or what changes you made.
+. Now check the status with git status.
+. You will see this message: nothing to commit, working tree clean.
+
+This means:
+
+. All your files are now saved (committed) in your local Git history
+. There is nothing left to commit
+. The working directory is clean
+
+9. Viewing the Commits
+After you commit, you can see the commit history using:
+git log
+This shows:
+. Commit ID (a long unique code)
+. Author name
+. Date & time
+. Commit message
+1. To See Full Details of a Commit:
+git show < commit-id >
+This command gives full details about that commit:
+. Which files were changed
+. What lines were added or removed (line-by-line view)
+. The full commit ID
+. The commit message
+. Who made the commit (author name)
+. And the date & time
+2. To only see file names changed in the commit:
+git show -- pretty="" -- name-only
+. This will show only the filenames that were committed in that commit.
+. This command is useful when you committed multiple files and just want to see how many
+and which files were included.
+
+10. Create GitHub Repo and Connect with Local Project
+1. Go to GitHub.com
+. Log in to your account
+. Click on "New repository"
+· Give a name like: myproject
+. Click Create repository
+2. Now Connect GitHub Repo to Your Local Git Project
+After you create the GitHub repo, you will see a URL like:
+https://github.com/yourname/myproject.git
+
+11. Connect Local Project to GitHub Repo
+. You Can Use Any Name Instead of origin
+. By default, we use the name origin to point to the GitHub repo:
+git remote add origin < url >
+But you can use any name - like you did:
+. This also works fine.
+. It means:"Hey Git, from now on, when I say jio, push my code to this GitHub repo
+git remote add jio < url >
+To confirm it's connected:
+git remote -v
+This means your local Git is now linked to your GitHub repo.
+
+12. Push Your Code to GitHub
+git push jio master
+What Happens Now?
+The moment you run the command above, a popup will come (from Git Bash or system), asking
+for:
+· Username - enter your GitHub username
+. Password -> don't give your GitHub password
+GitHub has removed password authentication, so it won't work!
+What to Do Then?
+. You have to go to GitHub and create a personal access token (like a password substitute).
+. Steps to Create Token:
+. Go to GitHub -> Settings
+. Click on Developer Settings
+. Click on Personal access tokens - Tokens (classic)
+. Click Generate new token
+· Give a name (ex: token)
+· Select scopes:
+. repo (important to allow push)
+. If You Don't Give Write Permission: You'll see errors like: fatal: Authentication failed or
+Permission denied (403 or 401).
+. Generate and copy the token
+. You will not be able to see it again later
+. That token acts like your password now.
+After Generating Token:
+. Copy the token safely
+. When you push (e.g., git push origin master), a popup appears
+. Paste the token as password
+. Your command will work. The push will be successful.
+. git remote -v shows all remote connections.
+
+Step 3: Create and Commit New File
+
+touch Main.java
+git add *
+git commit -m "Added extra.java"
+
+. This creates a new file named Main.java in your folder.
+. You'll see the file in red -> means it's untracked (not added to Git yet).
+
+13. Confirm Files on GitHub
+. Now go to GitHub website and open your repo.
+. You will see: All your project files
+
+14.Reuse Same GitHub Repo in Another Folder
+Let's say earlier you created a folder on Desktop, connected it to GitHub, and pushed your code.
+Now you want to use the same GitHub repo again - but from another folder (for example,
+in Downloa
+
+Step 1: Create a New Folder Anywhere
+cd Downloads
+mkdir git.two
+cd git.two
+You can create this new folder in Downloads, Documents, or anywhere - Git will still work.
+
+Step 2: Initialize Git and Connect to GitHub Repo
+git init
+git remote add hello
+git remote -v
+. This initializes a new Git repository in your current folder.
+. This connects your local folder to the GitHub repo.
+. Sometimes you might not want to use origin as the remote name. You can choose any
+name you like, such as hello, jio, or others.
+. git remote -v shows all remote connections.
+
+Step 3: Create and Commit New File
+touch Main. java
+git add *
+git commit -m "Added extra. java"
+. This creates a new file named Main.java in your folder.
+. You'll see the file in red -> means it's untracked (not added to Git yet).
+git add *
+. This moves the file to Staging Area - ready to be committed.
+. The file will now show in green -> means it's in the Staging Area, ready for commit.
+git commit -m "Added main. java"
+
+Step 4:Modifying an Existing File and Committing the Change
+1: Check Status (Clean State)
+git status
+. If everything is committed and there are no changes, Git will show: nothing to commit,
+working tree clean
+. This means all your changes have already been saved (committed), and there's nothing left to
+do.
+2. Modify a File and Check Status Again
+. Open and edit Main. java (Make any small change and save the file)
+. Check the Status Again
+. Now Main. java is in Working Directory as modified
+. This means any file you edit will move to the Working Directory.
+. Git compares it with the last committed version and detects the change.
+. If the file was already committed earlier, it is a tracked file.
+. After editing, it becomes a modified file in the Working Directory.
+. It is not automatically added to the Staging Area - you must add it manually
+3. Commit the Change (Without git add)
+git commit -am "Updated"
+. Note: This does NOT work for newly created or untracked files. It only stages and
+commits modified files that are already being tracked.
+. -a - automatically stages all modified & tracked files
+. -m - gives a message for the commit
+. You don't need git add because -a takes care of it.
+Now you're ready to push ... but WAIT
+You Might Get This Error:
+hint: Updates were rejected because the remote contains work that you do not have locally.
+This means: your local folder is empty, but the GitHub repo already has some files pushed earlier.
+
+15. Always Get the Latest Code First (Pull Before Push)
+To Fix the Error:
+git pull -- rebase (your alias name) master
+git push
+COPY
+. git pull -- rebase gets the latest code from GitHub and applies your new commits on top of
+it.
+. It pulls all the latest files and changes from GitHub (remote repository) that were already
+pushed earlier (maybe by you or someone else).
+. Now your push will be successful!
+. After pulling the code, use 1s -1rth to check. At the end of the list, you'll see the files that
+came from GitHub. This means our pull worked correctly, and all the old files are now in our
+local folder.
+
+16. Final Check
+After push, open your GitHub repo - confirm the new files are listed.
+To check if your file was successfully pushed to GitHub:
+. Open your GitHub repository in a browser.
+. You'll see the file listed (e.g. Main. java).
+Now the updated file is also pushed to GitHub.
