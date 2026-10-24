@@ -60,3 +60,180 @@ readme.md file
 
 Branching strategy
 ------------------
+
+
+
+
+
+BLOG NOTES:
+-----------
+Why Use SSH for GitHub?
+. No need to enter your username/password each time you push or pull code.
+. More secure than HTTPS with tokens.
+. Efficient for automation and CI/CD tools.
+
+Setup to Connect with GitHub
+1. Navigate to .ssh Directory
+Open terminal or Git Bash and run:
+cd ~/.ssh
+ls -la
+This checks if any SSH keys already exist (like id_rsa and id_rsa. pub).
+. If you see files like id_rsa and id_rsa. pub, you already have SSH keys (you can reuse them or
+generate new ones).
+
+2. Want to Generate New Keys?
+If you want to start fresh, first delete the existing keys:
+rm -rf id *
+This removes all keys starting with id_(like id_rsa, id_ed25519 etc.)
+3.What is the known_hosts File
+This file is automatically maintained by SSH and is used to store the fingerprint of remote
+systems (like EC2, GitHub, or any other server) that your machine connects to via SSH.
+What Exactly Does It Do?
+The first time you connect to a new SSH server (e.g., EC2 or GitHub):
+. SSH will ask:
+"Are you sure you want to continue connecting (yes/no)?"
+. When you type yes, the server's SSH fingerprint is saved in known_hosts.
+. On future connections, SSH checks this file to make sure:
+. The server is the same and hasn't changed its fingerprint.
+. This prevents man-in-the-middle (MITM) attacks
+. known_hosts is like a saved contact list of trusted servers your system has connected to
+through SSH."
+
+4. Generate SSH Key
+Open your terminal or Git Bash and run:
+ssh-keygen -t rsa
+. When it asks for file location -> Just press Enter (default is ~/. ssh/id_rsa)
+. When it asks for passphrase -> You can press Enter (no password), or set a secure one
+It creates 2 files inside your ~/.ssh/ folder that you can see.
+. id_rsa -> Private Key (don't share)
+. id_rsa.pub -> Public Key (you will upload to GitHub)
+
+5. (Optional) Generate SSH Key with Custom Name
+If you want, you can give your SSH key a custom name using -f option -
+like id_github_work or id_github_personal, based on your need.
+ssh-keygen -t rsa -f ~/.ssh/id_github_work
+. -t rsa -> Type of key
+. -f ~/.ssh/id_github_work -> File name and location
+
+6. Copy your public key
+cat id_rsa.pub
+Copy the full key output that starts with ssh-rsa
+
+7. Add the Public Key to GitHub
+. Go to GitHub
+. Click on your profile picture (top-right)
+. Go to Settings
+. In the left menu, click on SSH and GPG key
+. In the left menu, click on SSH and GPG keys
+. Click "New SSH Key"
+. Now Add Your Key:
+. Title: Give a name like "Git&Github"
+. Paste your copied public key here (from id_rsa. pub or your custom . pub file)
+. Once added, you'll see your key listed in the SSH and GPG Keys section,confirming that it's
+been successfully linked with your GitHub account.
+
+8. Test the SSH Connection
+ssh -T git@github.com
+What This Does:
+. Connects to GitHub using SSH
+. Verifies if your key is accepted
+Expected output:
+Hi your-username! You've successfully authenticated, but GitHub does not provide shell
+access.
+. This means: Your SSH setup is successful, and GitHub recognizes your machine.
+
+9. Clone the Repository (Using SSH)
+Instead of setting remote manually, we can directly clone using SSH:
+git clone git@github.com:jio-5gs/jio-public-repo.git
+cd
+cd jio-public-repo # change directory to newly cloned project folder.
+git remote -v #  shows the remote URL for fetch and push.
+
+10. Make Changes & Push via SSH
+. Now, Let's Make Some Changes
+. Let's say you want to modify three. java files and add a new line to the end with helpof echo
+command
+echo "Adding new line last" >> three. java
+. Check the status: The output will show the modified files.
+. Commit the changes:
+
+12. Push to GitHub via SSH:
+git push origin master
+SSH is already configured, so:
+. No username/password prompt
+. Code gets pushed securely
+Check GitHub:
+Go to your GitHub repo and you'll see:
+. The commit with your message
+. The file changes show the added line.
+
+12. What is a Pull Request (PR)?
+A Pull Request (PR) is a formal request to merge your changes from one branch into another
+(commonly from a feature or hotfix branch -> into the main/master branch) on GitHub.
+Why is a PR Important?
+PRs are especially useful when working in a team or collaborating on code, because they ensure
+that code is:
+. Reviewed before merging
+Others (like a team lead or reviewer) can check your changes.
+. Approved by the right person
+Teams often require approval from a senior, lead, or manager before merging code into the
+main branch.
+. Tested before going live
+PR ensures the changes are tested and verified before affecting production code.
+Common Use Cases
+. You fixed a bug or added a new feature in a branch (hotfix, feature/login, etc.).
+. You now want that code to go into master or main.
+. Instead of merging it directly, you raise a PR for:
+o Team to review
+o Ensure there are no conflicts
+o Approve and merge safely
+
+13. Scenario: Raising a PR from hotfix Branch to merge in master
+Step 1: Create a New Branch (hotfix) on GitHub
+. Click the branch dropdown (top left, near main or master)
+. Type new branch name: hotfix
+. Click "Create branch: hotfix from master"
+. Now you're in a new branch.
+. Now you're in a new branch.
+
+Step 2: Edit a File in the New Branch
+. Go to the file (e.g., Demo. java)
+. Click the edit (pencil) icon
+. Add or modify the line and click "Commit changes" to save.
+
+Step 3: Raise Pull Request
+. GitHub will now show a banner: "hotfix had recent pushes"
+. Click "Compare & pull request"
+. Review the source (your branch) and destination (master/main)
+. Add PR title like: "UdatedDemo. java"
+. Add PR description (what you fixed)
+. Click "Create Pull Request"
+
+Step 4: Wait for Review and Approval
+Once the PR is created, now it's time for the team lead or project owner to review it.
+. They open your PR
+. They go to the "Files changed" tab
+Update Demo.java #2
+. Here they compare the code line-by-line
+. They check if your changes are correct
+. They also make sure it doesn't break anything
+. If everything looks good, they click "Approve"
+
+Step 5: Merge the Pull Request
+Once the PR is approved:
+. They click on "Merge Pull Request"
+. Then click "Confirm merge"
+. GitHub will now show: Pull request successfully merged and closed.
+--
+. Your branch (hotfix) is now merged into the main branch (master or main).
+. Switch to the master branch
+. You'll see the updated files
+. Your fix is now part of the main project
+Conclusion:
+By using SSH, we don't need to enter username and password again and again. It also gives better
+security and is useful when we use automation tools like Jenkins.
+And when we follow the Pull Request (PR) process, our code will go through proper checking -
+team lead or senior will review it, approve it, and only then it will be merged safely. This avoids
+mistakes and helps in team collaboration.
+So, overall SSH setup + PR workflow = safe, secure, and professional way of working with Git and
+GitHub.
