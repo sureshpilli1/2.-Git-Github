@@ -1,24 +1,14 @@
 git best practices
 ==================
-
 --> Don't commit your code in middle of work
-
 --> commit your code, once everything is ready
-
 --> Test your code before you commit 
-
 --> Give proper commit messages.
-
-
    "JIRA_ID: change message"
     165: updated pom.xml
-
 --> avoid the merge conflicts [connect with team]
-
 --> avoid the bind merging [always raise PR]
-
 --> closely monitor the branches, If any branch is not requires pls delete that branch with proper approvals from lead.
-
 --> Delete the stashes if  not required.
 
 
@@ -26,32 +16,24 @@ git best practices
 
 Git clone command
 —----------------
-The git clone command in Git is used to create a copy of an existing Git repository. This command not only copies the repository but also sets up a connection to the remote repository so that you can pull down updates and push your changes back to the original repository if you have the appropriate permissions.
+The git clone command in Git is used to create a copy of an existing Git repository. 
+This command not only copies the repository but also sets up a connection to the remote repository so that you can pull down updates and push your changes back to the original repository if you have the appropriate permissions.
 
 Step 1:  create a folder in Desktop
 Step 2: go inside that folder
 Step 3: Git clone <url>  -> Along with code, git config also will come
 Step 4: crate a staging branch, go there and start work .
-
 NOTE: default alias name origin
-
 git remote -v
-
-
-
-
 
 
 
 
 Git Merging strategy
 ====================
-
-
 1. Fast-Forward Merge:
-
-
-Description: In a fast-forward merge, Git simply moves the pointer of the target branch forward to include the commits of the source branch. This happens when the target branch hasn't diverged since the source branch was created.
+Description: In a fast-forward merge, Git simply moves the pointer of the target branch forward to include the commits of the source branch. 
+This happens when the target branch hasn't diverged since the source branch was created.
 Scenario:
 Assume we have a repository where master branch is the main branch and a feature branch was created from master. During the development on feature branch, no new commits were made to master.
 Diagram:
@@ -68,13 +50,10 @@ Copy code
 Explanation:
 Here, commits D and E from feature branch are simply added to the master branch in a linear fashion, as there were no new commits on master after branching off feature.
 
-
-
-
 2. Recursive Merge (Three-Way Merge): [ORT merge strategy]
 
-
-Description: Recursive merge (three-way merge) is used when changes have occurred on both the source (feature) and target (master) branches since they diverged. Git analyzes the changes and creates a new merge commit to reconcile the differences.
+Description: Recursive merge (three-way merge) is used when changes have occurred on both the source (feature) and target (master) branches since they diverged. 
+Git analyzes the changes and creates a new merge commit to reconcile the differences.
 Scenario:
 Suppose both master and feature branches have diverged with new commits.
 Diagram:
@@ -95,11 +74,9 @@ Explanation:
 Git creates a new merge commit M that combines the changes from both branches (master and feature). Commits D and E are merged with master, preserving the history of both branches.
 
 
-
-
 3. Merge and Rebase:
-
-Description: While not strictly a merging technique, rebasing is an alternative approach to integrating changes from one branch (feature) into another (master). Rebase moves the entire branch onto a new base (typically the latest commit of master), rewriting the commit history.
+Description: While not strictly a merging technique, rebasing is an alternative approach to integrating changes from one branch (feature) into another (master). 
+Rebase moves the entire branch onto a new base (typically the latest commit of master), rewriting the commit history.
 Scenario:
 Suppose you have a feature branch with several commits that you want to incorporate into master without creating a merge commit.
 Diagram:
@@ -114,10 +91,8 @@ css
 Copy code
       A --- B --- C --- X' --- Y' --- Z'  (master, feature)
 Explanation:
-Rebase moves the commits X, Y, and Z from feature branch on top of the latest commit (C) of master. This results in a linear history where the commits from feature branch (X', Y', Z') appear sequentially after C.
-
-
-
+Rebase moves the commits X, Y, and Z from feature branch on top of the latest commit (C) of master. 
+This results in a linear history where the commits from feature branch (X', Y', Z') appear sequentially after C.
 
 
 Git cherry-pick
@@ -125,17 +100,9 @@ Git cherry-pick
 It will help us to merge only particular commits.
 
 
-
-
-
-
-
 Git pull and git fetch
 =======================
-
 By using this commands , we will get an updated code from remote repo.
-
-
 
 Git fetch
 —---------
@@ -147,9 +114,7 @@ EX: git fetch origin test
 Git pull
 —--------
 Git fetch + git merge.
-
 EX: Git pull origin test
-
 
 IQ: I want to change the recent commit message how?
 ANS:
@@ -157,3 +122,239 @@ ANS:
     git commit --amend —> editor will open
     git push --force —> push to remote to update the name
 
+
+
+
+
+BLOG NOTES:
+-----------
+Best Practices for Git Workflow
+
+Commit Management
+
+Branching Strategy
+
+Repository Maintenance
+
+Collaboration
+
+1. Don't Commit Code in the Middle of Work
+. Never commit half-done or broken code.
+. Wait until your changes are complete, tested, and verified.
+
+Commit Complete Code
+Committing complete, tested code
+ensures stability and clarity.
+
+Commit Half-Done Code
+Committing incomplete code can
+lead to errors and confusion.
+
+Bad:
+git commit -m "half login logic added"
+
+Good:
+git commit -m "LOGIN-101: Implemented complete login validation"
+
+2. Test Your Code Before You Commit
+A commit should always represent working, tested code not something half-done or broken.
+Before you hit that commit button, follow these steps:
+Run Tests
+. If your project has automated tests (like unit tests), run them locally.
+. This makes sure the new code didn't break anything else.
+. If the tests fail, fix the issues first before committing.
+Run a Linter or Code Formatter
+. A linter checks your code for mistakes, bad formatting, and coding standard issues.
+. It's like a spell-check for your code.
+. If any errors are found, correct them before committing.
+Only Then: Commit Your Code
+. After tests are passed and the code is clean, you are ready to commit.
+. This way, you avoid sending broken or poorly written code to your repository.
+
+3. Give Proper, Clear Commit Messages
+Your future self and your team will thank you.
+
+Use a proper format: JIRA_ID: Short but meaningful message
+AUTH-1052: Update pom.xml with JWT dependency
+
+Don't give unclear commit messages like:
+"changes"
+"final commit"
+"stuff"
+
+Update the last commit if you forgot something:
+git commit -- amend
+
+4. Use Feature Branches - Never Commit Directly to main
+. Keep the main branch clean and production-ready.
+. Always create a new branch for every feature, bugfix, or change:
+. Push changes through a Pull Request. Never blindly merge:
+
+5. Use Git Tags for Releases
+Tags help you mark stable points in your project's timeline.
+git tag v1.0.0
+git push origin v1.0.0
+Use semantic versioning (vX.Y.Z) for consistent release versions.
+
+6. Communicate with the Team to Avoid Merge Conflicts
+Good Git practice is also about team collaboration.
+. Inform teammates when you're working on the same file/module.
+. Coordinate large refactors or shared components.
+This small communication avoids large, time-wasting conflicts.
+
+7. Avoid Blind Merging - Always Raise Pull Requests (PR)
+PRs are for code review, transparency, and improved teamwork.
+Create PRs even if you're working solo. It keeps a consistent and auditable workflow.
+
+Benefits
+
+. Code review
+. Automatic checks
+. Approval process
+
+8. Monitor and Maintain Branch Health
+
+Identify Stale Branches
+Recognize branches that are no longer active
+
+Clean Up Stale Branches
+Remove inactive branches to declutter the repository
+
+Seek Approval
+Obtain permission from the lead before deleting
+
+Delete Shared Branch
+Remove the branch after approval is granted
+. Always take approval from your lead or team before deleting any shared or
+important branches.
+. Keeping only active branches helps the team stay organized and reduces confusion.
+
+9. Manage and Clean Your Stashes
+Stashes are temporary don't treat them like permanent storage.
+
+Managing Git Stashes
+--------------------
+Check Current Stashes
+Identify Unneeded Stashes
+Delete Unneeded Stashes
+Maintain Clean Directory
+
+Check current stashes:
+git stash list
+Delete the ones no longer needed:
+git stash drop stash@{o}
+Keep your Git working directory clean and clutter-free.
+
+10. Git Clone Command
+What is git clone?
+The git clone command creates a local copy of a remote Git repository.
+It downloads the full code, commit history, branches, and configuration of the project from
+platforms like GitHub, GitLab, or Bitbucket.
+git clone < repository-url >
+. A project folder named myproject/ will be created.Inside it, you'll see:
+. Code files (like .java, .py, etc.)
+. .git/ folder (hidden, contains Git metadata)
+. Along with code, git config also will come
+After cloning, the default alias name for the remote repository is always: origin
+
+11. Fast-Forward Merge
+In a fast-forward merge, the source branch can have multiple commits, and all of them will be
+added to the target branch as long as the target branch has not made any new commits after
+branching off.
+Scenario:
+1. You are on the master branch and have made two commits: one is C1 and the other is C2.
+2. You create a new branch called bugfix from master (at commit C2) and make two more commits
+there: B1 and B2 in the bugfix branch
+. git log -4 shows the last 4 commits in the current branch (master), from most recent to
+older.
+The latest 4 commits will be:
+. B2 (from bugfix)
+· B1 (from bugfix)
+. C2 (original master)
+· C1 (original master)
+3 .Now, you switch back to master and run merge bugfix.
+. Since this was a fast-forward merge, master just moved forward to include the commits
+from bugfix.
+
+12. Three-Way Merge (Recursive Merge) - ORT Strategy
+When both branches have progressed independently
+. The source branch (e.g., hotfix) has some new commits
+. The target branch (e.g., master) also has its own new commits after the branching point
+. Then Git cannot do a simple fast-forward.
+Instead, it performs a three-way merge, and creates a new merge commit to combine both
+histories.
+Scenario:
+Step 1: You are on the master branch
+You create two commits: M1 and M2
+Step 2: You create a new branch hotfix from master (after M2)
+You make two commits on hotfix: H1 and H2.
+Step 3: Meanwhile, someone adds another commit on master: M3
+Step 4 :You now try to merge hotfix into main:
+Git shows this in the terminal:
+
+When Git shows this screen, it's telling us that it's creating a new commit to combine both
+branches - because both have changed after splitting.
+. Git detected changes on both branches (main and hotfix), so it cannot do a fast-forward
+merge.
+. Instead, it opens your terminal editor (like Vi) and asks you to write a commit message.
+. This will create a new merge commit, usually titled:
+. Since both branches have diverged, Git cannot perform a simple fast-forward. Instead, it
+uses the Three-Way Merge (ORT strategy). This is known as a three-way merge, and the
+commit message you enter here will appear in your history.
+
+13. Git cherry-pick : Merging Only One Specific Commit
+Scenario
+. You want to merge only the second commit (F2) from a feature branch f1-
+branch into master without merging F1 or F3.
+Step 1: Create a New Branch
+You're on master, now create a new branch:
+Step 2: Add 3 Commits in f1-branch
+. F1 Commit (Main. java)
+. F2 commit - target file (users. java) - this is what we want to cherry-pick:
+· F3 commit (login. java)
+Step 3 : View the Last 3 Commits in f1-branch
+We have a branch called f1-branch with 3 commits:
+Now, we only want to bring F2 (not F1 or F3) into the master branch. This is where we use git
+cherry-pick.
+. Switch to the master Branch
+. Check users. java Before Merging, Output will show that it has no user named Revanth yet.
+. Now let's bring only F2 commit (not F1 or F3) into master
+. If there's no conflict, the commit will be added successfully.
+. Confirm That Only F2 Was Merged
+. git log -1 shows the most recent commit on the current branch in our case, it will show
+the cherry-picked commit F2, because that was the last commit applied.
+
+14 .Git pull vs Git fetch
+. git fetch -> It brings the latest changes from the remote (like GitHub) into your local
+repository,
+not into your working area.
+. To bring them into your working area, you have to run git merge after git fetch.
+. git pull - It brings the latest changes from the remote directly into your working area in one
+step.
+It's basically:
+git pull = git fetch + git merge
+1. Let's see an example of git fetch.
+. You are on your local machine.
+. Someone else (your teammate) has pushed a new line in Demo. java on GitHub.
+. You ran:
+git fetch origin master
+. This downloaded changes from GitHub (remote master) to your local tracking
+branch origin/master, but didn't apply them yet to your working master branch.
+. You checked Demo. java still had: Adding new feature = 3
+You then ran:
+git merge origin/master
+. This merged the latest commit(s) from origin/master into your local master.
+. Git used fast-forward strategy, because your master branch had no diverging commits.
+. This shows the new change (feature = 4) was successfully merged in.
+. git fetch gives you a chance to review or compare before applying changes.
+. git merge origin/master lets you choose when and how to apply them.
+
+2. Let's see an example of git Pull.
+Let's say your teammate pushed a new line in Demo. java:
+. You check your local file. Your file is still old not updated yet.
+You run git pull
+git pull origin master
+This pulls the latest updates from GitHub to your local system and merges them.
+Check the file again
+The new line from GitHub is now merged into your file.
+. git pull automatically brings remote changes to your local branch.
