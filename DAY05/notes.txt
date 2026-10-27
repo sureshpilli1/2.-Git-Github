@@ -63,8 +63,7 @@ step 2: git restore <fileName>
 BLOG NOTES:
 -----------
 Git Branching: Work Without Disturbing the Main Code
-Branching in Git lets you create a separate path from the main project, allowing independent v
-without affecting the original code.
+Branching in Git lets you create a separate path from the main project, allowing independent work without affecting the original code.
 
 How It Works
 
