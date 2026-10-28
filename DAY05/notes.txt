@@ -499,6 +499,9 @@ check GitHub under tags.
 5. Push All Tags to Remote
 This makes all locally created tags available on GitHub (or any Git remote), so they can be
 referenced, downloaded, or used in deployments.
+
+git push < alias name > --tags
+
 . Now you can see all the tags in the tags section on GitHub.
 
 6. Delete a Tag from Remote
