@@ -527,8 +527,27 @@ On GitHub:
 . GitHub will create both a release and a tag.
 
 7. Difference Between Git Branch and Git Tag
+## 7. Difference Between Git Branch and Git Tag
 
+| Feature                   | Branch                                                  | Tag                                                              |
+| ------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
+| Nature                    | Mutable — can change and be updated over time           | Immutable in normal use — intended to be a fixed reference point |
+| Purpose                   | Used during development, testing, and feature isolation | Used to mark a specific version or release                       |
+| Creation Time             | Created while development is in progress                | Usually created when marking a release or milestone              |
+| Source                    | Can be created from any commit or branch                | Can point to a commit from any branch                            |
+| Commands to List          | `git branch`                                            | `git tag`                                                        |
+| Command to Create         | `git branch <branch-name>`                              | `git tag <tag-name>`                                             |
+| Command to Push           | `git push <alias> <branch-name>`                        | `git push <alias> <tag-name>`                                    |
+| Push All                  | `git push <alias> --all`                                | `git push <alias> --tags`                                        |
+| Command to Delete Locally | `git branch -d <branch-name>`                           | `git tag -d <tag-name>`                                          |
+| Common Use Case           | Feature development, bug fixes, and testing             | Marking releases such as `v1.0.0`, `v2.0.1`                      |
 
+Remember the difference:
+
+- Branch = a moving pointer used for ongoing development.
+- Tag = a fixed reference to a particular commit, commonly used to identify a release.
+
+Note: Git tags can technically be moved or deleted, but they are normally treated as permanent release markers.
 
 
 
